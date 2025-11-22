@@ -1,20 +1,77 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# consi.online
 
-# Run and deploy your AI Studio app
+La prima palestra finanziaria digitale italiana.
 
-This contains everything you need to run your app locally.
+## Installazione e Avvio
 
-View your app in AI Studio: https://ai.studio/apps/drive/11B9hGkDqhvFSqqBu_WM8acwNOwEHjkze
+### Prerequisites
+- Node.js (v18 o superiore)
+- npm
 
-## Run Locally
+### Installazione Dipendenze
 
-**Prerequisites:**  Node.js
+```bash
+npm install --include=dev
+```
 
+### Avvio Sviluppo
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm run dev
+```
+
+L'applicazione sarà disponibile su `http://localhost:5173`
+
+### Build per Produzione
+
+```bash
+npm run build
+```
+
+I file compilati saranno generati nella cartella `dist/`.
+
+### Preview Build di Produzione
+
+```bash
+npm run preview
+```
+
+## Deploy
+
+### Deploy su Netlify
+
+1. Connetti il repository a Netlify
+2. Configura il build command: `npm run build`
+3. Configura la publish directory: `dist`
+4. Deploy!
+
+### Deploy Manuale
+
+Dopo aver eseguito `npm run build`, carica il contenuto della cartella `dist/` sul tuo hosting.
+
+## Struttura del Progetto
+
+```
+/
+├── index.html          # HTML principale
+├── index.tsx           # Entry point React
+├── App.tsx             # Componente principale
+├── index.css           # Stili Tailwind
+├── vite.config.ts      # Configurazione Vite
+├── tailwind.config.js  # Configurazione Tailwind
+├── tsconfig.json       # Configurazione TypeScript
+└── dist/               # Output build (generato)
+```
+
+## Tecnologie
+
+- React 19
+- TypeScript
+- Tailwind CSS
+- Vite
+- Lucide React (icons)
+
+## Note
+
+- Il form di waitlist è configurato per Netlify Forms
+- Assicurati di avere l'immagine `profile.jpg` nella cartella `public/` per il profilo
