@@ -177,24 +177,43 @@ export default function App() {
   const [privacy, setPrivacy] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleWaitlistSubmit = (e: React.FormEvent) => {
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && name && privacy) {
-      const form = e.target as HTMLFormElement;
-      const formData = new FormData(form);
-      
-      fetch("/", {
+
+    if (!email || !name || !privacy) {
+      setError('Compila tutti i campi obbligatori');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(formData as any).toString(),
-      })
-        .then(() => setSubmitted(true))
-        .catch((error) => alert(error));
-        
-      setEmail('');
-      setName('');
-      setReason('');
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setEmail('');
+        setName('');
+        setReason('');
+        setPrivacy(false);
+      } else {
+        throw new Error('Errore invio form');
+      }
+    } catch (err) {
+      setError('Errore durante l\'invio. Riprova tra qualche istante.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -234,7 +253,7 @@ export default function App() {
             <div className="relative z-10 max-w-5xl mx-auto px-4 flex flex-col items-center">
               <Badge text="Educazione Finanziaria Personalizzata" color={BRAND_BLUE} />
               
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold leading-[0.95] tracking-tighter mb-8" style={{ color: BRAND_DARK }}>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[0.95] tracking-tighter mb-8" style={{ color: BRAND_DARK }}>
                 La prima palestra finanziaria <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3b82f6] via-[#0d234f] to-[#0d234f]">
                   digitale italiana
@@ -306,7 +325,7 @@ export default function App() {
                       ].map((item, i) => (
                         <div key={i} className="flex gap-6 p-6 bg-white rounded-[1.5rem] border border-slate-100 shadow-lg shadow-slate-200/50 hover:shadow-xl transition-all items-start hover:-translate-x-1">
                           <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center shrink-0 text-slate-600 mt-1 border border-slate-200">
-                              <item.icon size={26} />
+                              <item.icon size={32} className="mb-3" />
                           </div>
                           <div>
                               <h4 className="font-bold text-xl mb-2 text-slate-800">{item.title}</h4>
@@ -353,9 +372,9 @@ export default function App() {
                           ].map((prog, i) => (
                             <div key={i} className="bg-white p-6 rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)] border border-slate-100 hover:border-orange-200 hover:shadow-orange-100/50 transition-all group flex flex-col hover:-translate-y-1">
                                 <div className="w-12 h-12 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-600 mb-5 group-hover:scale-110 transition-transform shadow-sm">
-                                  <prog.icon size={24} />
+                                  <prog.icon size={32} className="mb-3" />
                                 </div>
-                                <h5 className="font-bold text-lg uppercase mb-3 leading-tight tracking-tight" style={{ color: BRAND_DARK }}>{prog.title}</h5>
+                                <h5 className="font-bold text-xl md:text-2xl uppercase mb-3 leading-tight tracking-tight" style={{ color: BRAND_DARK }}>{prog.title}</h5>
                                 <p className="text-sm text-slate-600 mb-5 leading-relaxed flex-grow font-medium">{prog.desc}</p>
                                 <p className="text-[10px] text-slate-400 uppercase font-bold tracking-wider mt-auto border-t border-slate-100 pt-4">{prog.sub}</p>
                             </div>
@@ -365,7 +384,7 @@ export default function App() {
                         {/* Disclaimer Warning */}
                         <div className="bg-amber-50 border border-amber-100 p-6 rounded-[1.5rem] flex gap-5 mt-auto relative overflow-hidden">
                           <div className="absolute -right-6 -top-6 w-20 h-20 bg-amber-100 rounded-full blur-2xl"></div>
-                          <AlertTriangle size={28} className="text-amber-600 shrink-0 relative z-10" />
+                          <AlertTriangle size={32} className="text-amber-600 shrink-0 relative z-10 mb-3" />
                           <p className="text-xs text-amber-900/80 leading-relaxed font-medium relative z-10">
                               <strong>IMPORTANTE:</strong> Questi contenuti hanno finalità esclusivamente educativa e non costituiscono consulenza finanziaria personalizzata. consi.online non raccomanda prodotti specifici né costruisce portafogli su misura. Per consulenza personalizzata, rivolgiti a professionista autorizzato iscritto ai registri Consob/IVASS.
                           </p>
@@ -388,7 +407,7 @@ export default function App() {
                 <div className="inline-block px-10 py-4 rounded-full bg-[#d97706] text-white text-xl font-black mb-10 tracking-widest shadow-[0_0_50px_-10px_rgba(217,119,6,0.6)] transform hover:scale-105 transition-transform cursor-default border-2 border-orange-400/30 uppercase">
                   FINFIT SYSTEM™
                 </div>
-                <h2 className="text-4xl md:text-7xl font-extrabold mb-8 text-white tracking-tighter leading-tight drop-shadow-xl">Il metodo esclusivo che ti allena a decidere meglio. <br /><span className="text-[#d97706] relative inline-block mt-2">Sì, meglio!</span></h2>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-8 text-white tracking-tighter leading-tight drop-shadow-xl">Il metodo esclusivo che ti allena a decidere meglio. <br /><span className="text-[#d97706] relative inline-block mt-2">Sì, meglio!</span></h2>
                 <p className="text-2xl text-blue-100/80 font-light max-w-3xl mx-auto">Educazione operativa, non teoria. Simulazioni pratiche, non lezioni frontali.</p>
               </div>
 
@@ -575,16 +594,22 @@ export default function App() {
                        </label>
                     </div>
 
-                    <button 
-                      type="submit" 
-                      disabled={submitted}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting || !privacy}
                       className={`
                         w-full py-6 rounded-2xl font-bold text-xl mt-4 transition-all shadow-xl
-                        ${submitted ? 'bg-green-500 text-white' : 'bg-[#eea268] hover:bg-[#d97706] text-white hover:-translate-y-1 hover:shadow-orange-500/30 ring-4 ring-orange-500/20'}
+                        ${isSubmitting || !privacy ? 'opacity-50 cursor-not-allowed bg-gray-400' : 'bg-[#d97706] hover:bg-[#c86a05] hover:-translate-y-1'}
                       `}
+                      style={!isSubmitting && privacy ? { backgroundColor: '#d97706' } : {}}
                     >
-                      {submitted ? 'Sei in lista!' : "Entra in lista d'attesa. Sì, meglio!"}
+                      {isSubmitting ? 'Invio in corso...' : submitted ? '✓ Sei in lista!' : "Entra in lista d'attesa. Sì, meglio!"}
                     </button>
+
+                    {error && (
+                      <p className="text-red-400 text-sm mt-4 text-center">{error}</p>
+                    )}
+
                     <p className="text-xs text-center text-blue-300/50 mt-4">
                        Zero spam. Ti scriviamo solo per il lancio. Puoi cancellarti quando vuoi.
                     </p>

@@ -1,0 +1,9 @@
+PLACEHOLDER FOR OG-IMAGE.PNG
+
+This file should be replaced with an actual 1200x630px image with:
+- Background: #0d234f (Oxford Blue)
+- Text centered white: "consi.online"
+- Subtitle: "La prima palestra finanziaria digitale italiana"
+- Font: Inter Bold
+
+Leonardo will replace this with the actual image.
