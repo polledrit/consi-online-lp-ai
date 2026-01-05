@@ -227,10 +227,11 @@ export default function App() {
         {/* HEADER */}
         <header className="flex justify-between items-center mb-12 px-2 py-4">
           <div className="flex items-center gap-3 group cursor-pointer">
-             <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-xl shadow-blue-900/20 transform group-hover:rotate-6 transition-all duration-300" style={{ backgroundColor: BRAND_DARK }}>C</div>
-                <span className="text-2xl font-bold tracking-tighter" style={{ color: BRAND_DARK }}>consi.online</span>
-            </div>
+             <img
+               src="/logos/logo-header.svg"
+               alt="consi.online"
+               className="h-10 md:h-12 w-auto transition-all duration-300 group-hover:scale-105"
+             />
           </div>
           <a 
             href="#waitlist" 
@@ -659,9 +660,12 @@ export default function App() {
           <BentoCard dark className="md:col-span-12 mt-12 border-0 bg-[#020617]">
              <div className="grid md:grid-cols-4 gap-12 mb-16">
                 <div className="md:col-span-1">
-                   <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white font-bold text-xl">C</div>
-                      <h3 className="text-3xl font-bold tracking-tight">consi.online</h3>
+                   <div className="mb-6">
+                      <img
+                        src="/logos/logo-footer.svg"
+                        alt="consi.online"
+                        className="h-8 w-auto"
+                      />
                    </div>
                    <p className="text-slate-400 text-sm mb-6 font-light leading-relaxed max-w-xs">La prima palestra finanziaria digitale italiana. Preparati a gestire il tuo futuro con consapevolezza.</p>
                    <p className="text-[10px] text-slate-600 font-mono uppercase tracking-[0.2em]">analizza, capisci, migliora</p>
