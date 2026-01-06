@@ -230,7 +230,7 @@ export default function App() {
              <img
                src="/logos/logo-header.svg"
                alt="consi.online"
-               className="h-10 md:h-12 w-auto transition-all duration-300 group-hover:scale-105"
+               className="h-14 md:h-16 w-auto transition-all duration-300 group-hover:scale-105"
              />
           </div>
           <a 
@@ -664,7 +664,7 @@ export default function App() {
                       <img
                         src="/logos/logo-footer.svg"
                         alt="consi.online"
-                        className="h-8 w-auto"
+                        className="h-10 w-auto"
                       />
                    </div>
                    <p className="text-slate-400 text-sm mb-6 font-light leading-relaxed max-w-xs">La prima palestra finanziaria digitale italiana. Preparati a gestire il tuo futuro con consapevolezza.</p>
